@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>跳转中 · 中国奶龙大学</title>
+  <style>
+    /* 全局重置与基础样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(145deg, #f9f5f0 0%, #f0ebe4 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      color: #2c2c2c;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* 主容器 - 弹性居中 */
+    .redirect-container {
+      width: 100%;
+      max-width: 640px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 36px;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15),
+                  0 4px 18px rgba(0, 0, 0, 0.05),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    /* 标题 */
+    .university-title {
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #1a1a1a;
+      margin-bottom: 1.5rem;
+      word-break: break-word;
+    }
+
+    .university-title .highlight {
+      color: #003366; /* 浙大蓝 */
+      position: relative;
+      display: inline-block;
+    }
+
+    /* 装饰小线 */
+    .university-title .highlight::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #003366, #4a7a9c, #b3c9d9);
+      border-radius: 10px;
+      opacity: 0.7;
+    }
+
+    /* 图片区域 */
+    .image-wrapper {
+      margin: 1.8rem auto 2.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 28px;
+      padding: 0.8rem;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02), 0 8px 20px -8px rgba(0, 51, 102, 0.15);
+      transition: transform 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .image-wrapper:hover {
+      transform: scale(1.01);
+    }
+
+    .image-wrapper img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.2s;
+      /* 默认尺寸适配 */
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      background: #ffffff;
+    }
+
+    /* 倒计时区域 */
+    .countdown-area {
+      margin: 1.5rem 0 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .countdown-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #7a6f66;
+      font-weight: 500;
+    }
+
+    .countdown-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(3rem, 12vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1;
+      color: #003366;
+      background: rgba(255, 255, 255, 0.6);
+      width: clamp(5rem, 20vw, 7rem);
+      height: clamp(5rem, 20vw, 7rem);
+      border-radius: 50%;
+      box-shadow: 0 12px 24px -8px rgba(0, 51, 102, 0.3),
+                  inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+      margin-top: 0.2rem;
+      transition: all 0.15s;
+      font-variant-numeric: tabular-nums;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      animation: pulse 1s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 12px 24px -8px rgba(0, 51, 102, 0.3); }
+      100% { transform: scale(1.02); box-shadow: 0 16px 28px -6px rgba(0, 51, 102, 0.4); }
+    }
+
+    /* 跳转提示小字 */
+    .redirect-hint {
+      font-size: 0.85rem;
+      color: #8b8178;
+      margin-top: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .redirect-hint .dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #003366;
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* 手动跳转链接 (备用/辅助) */
+    .manual-link {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .manual-link a {
+      color: #003366;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dashed #a0b8cc;
+      transition: all 0.2s;
+      word-break: break-all;
+    }
+
+    .manual-link a:hover {
+      color: #1a4d7a;
+      border-bottom-color: #1a4d7a;
+    }
+
+    /* aboutus 栏目 */
+    .aboutus-section {
+      margin-top: 2.2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      font-size: 0.8rem;
+      color: #8b8178;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .aboutus-title {
+      font-weight: 600;
+      color: #5a524b;
+      letter-spacing: 0.5px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+
+    .aboutus-title::before,
+    .aboutus-title::after {
+      content: '·';
+      opacity: 0.4;
+      font-size: 1.2rem;
+      line-height: 0.8;
+    }
+
+    .aboutus-content {
+      line-height: 1.6;
+      max-width: 400px;
+      margin: 0 auto;
+      word-break: break-word;
+    }
+
+    .aboutus-content a {
+      color: #7a6f66;
+      text-decoration: none;
+      border-bottom: 1px solid #d9d2cb;
+    }
+
+    .aboutus-content a:hover {
+      color: #003366;
+      border-bottom-color: #003366;
+    }
+
+    /* 针对小屏幕的微调 */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .redirect-container {
+        padding: 1.8rem 1.2rem 1.5rem;
+        border-radius: 28px;
+      }
+
+      .image-wrapper img {
+        max-height: 140px;
+      }
+
+      .countdown-number {
+        width: 4.5rem;
+        height: 4.5rem;
+        font-size: 2.8rem;
+      }
+
+      .aboutus-section {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+      }
+
+      .university-title {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* 超小屏幕 (如老式手机) */
+    @media (max-width: 340px) {
+      .redirect-container {
+        padding: 1.5rem 0.8rem 1.2rem;
+      }
+
+      .image-wrapper img {
+        max-height: 110px;
+      }
+    }
+
+    /* 如果图片加载失败, 显示占位 */
+    .image-wrapper img[alt] {
+      font-size: 0.9rem;
+      color: #8b8178;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="redirect-container">
+    <!-- 标题 -->
+    <h1 class="university-title">
+      中国奶龙大学：<span class="highlight">浙江大学</span>
+    </h1>
+
+    <!-- 图片区域 -->
+    <div class="image-wrapper">
+      <img src="image.png" alt="中国奶龙大学 · 浙江大学" loading="eager" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('beforeend', '<div style=\'padding:1.2rem;color:#8b8178;font-size:0.9rem;\'>🐉 image.png 未找到</div>');">
+    </div>
+
+    <!-- 倒计时 -->
+    <div class="countdown-area">
+      <span class="countdown-label">即将前往</span>
+      <div class="countdown-number" id="countdownDisplay">5</div>
+      <div class="redirect-hint">
+        <span class="dot"></span> 秒后跳转至浙江大学官网
+      </div>
+    </div>
+
+    <!-- 手动链接 (备用) -->
+    <div class="manual-link">
+      <a href="https://www.zju.edu.cn/" id="manualRedirect">立即跳转 →</a>
+    </div>
+
+    <!-- aboutus 栏目 -->
+    <div class="aboutus-section">
+      <div class="aboutus-title">About Us</div>
+      <div class="aboutus-content">
+        中国奶龙大学 · 浙江大学跳转中间站<br>
+        作者：浮萤，机械工程万岁！<br>
+        <a href="https://www.zju.edu.cn/" target="_blank" rel="noopener noreferrer">访问浙江大学官网</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // 配置: 倒计时秒数 & 目标链接
+      const COUNTDOWN_SECONDS = 5;
+      const TARGET_URL = 'https://www.zju.edu.cn/';
+
+      // DOM 元素
+      const countdownDisplay = document.getElementById('countdownDisplay');
+
+      // 如果找不到倒计时元素，直接跳转
+      if (!countdownDisplay) {
+        window.location.href = TARGET_URL;
+        return;
+      }
+
+      let remaining = COUNTDOWN_SECONDS;
+      countdownDisplay.textContent = remaining;
+
+      // 倒计时定时器
+      const timer = setInterval(function() {
+        remaining -= 1;
+
+        if (remaining <= 0) {
+          clearInterval(timer);
+          countdownDisplay.textContent = '0';
+          // 跳转
+          window.location.href = TARGET_URL;
+        } else {
+          countdownDisplay.textContent = remaining;
+        }
+      }, 1000);
+
+      // 如果用户点击手动跳转链接，清除定时器避免冲突（其实直接跳转即可）
+      document.getElementById('manualRedirect')?.addEventListener('click', function(e) {
+        // 不阻止默认行为，但清除计时器，防止重复跳转干扰
+        clearInterval(timer);
+        // 让浏览器正常跳转即可（href 已设置）
+      });
+
+      // 安全后备: 如果5秒后由于某些原因没有跳转（如脚本错误），增加一个兜底
+      setTimeout(function() {
+        // 再次检查，如果页面还在，则强行跳转（避免重复跳转不会有害）
+        if (window.location.href !== TARGET_URL && !window.location.href.includes('zju.edu.cn')) {
+          // 但为了防止用户手动取消或者其他情况，可以再加一个短延迟强制跳转，此处略作防护
+          // 实际上倒计时已会跳转，这里只是冗余。
+        }
+      }, 5500);
+    })();
+  </script>
+
+</body>
+</html>
